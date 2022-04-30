@@ -1,0 +1,23 @@
+name: Login Ptt daily
+
+on:
+  schedule:
+    - cron:  '0 0 12 * * ?'
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH to ptt
+        uses: appleboy/ssh-action@master
+        with:
+          host: 'ptt.cc'
+          username: bbsu
+          script: |
+            test
+            test
