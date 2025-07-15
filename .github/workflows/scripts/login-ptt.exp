@@ -1,0 +1,29 @@
+#!/usr/bin/expect -f
+
+set timeout 10
+set user $env(PTT_USER)
+set pass $env(PTT_PASS)
+
+spawn telnet ptt.cc
+
+expect "請輸入代號："
+send "$user\r"
+
+expect "請輸入密碼："
+send "$pass\r"
+
+expect {
+    "*您想刪除其他重複登入的連線嗎*" {
+        send "y\r"
+        exp_continue
+    }
+    "*請按任意鍵繼續*" {
+        send "\r"
+        exp_continue
+    }
+    "*您要刪除以上錯誤嘗試的記錄嗎*" {
+        send "y\r"
+        exp_continue
+    }
+}
+interact
