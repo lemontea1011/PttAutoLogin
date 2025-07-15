@@ -1,24 +1,28 @@
-name: Login Ptt daily
+name: PTT Login with external expect script
 
 on:
   # schedule:
   #   - cron: '0 0 * * *'
   
   workflow_dispatch:
-  
+
   pull_request:
 
 jobs:
-  build:
+  login-ptt:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
       - name: Install expect
         run: sudo apt-get update && sudo apt-get install -y expect
 
+      - name: Set executable permission to expect script
+        run: chmod +x .github/workflows/scripts/login-ptt.exp
+
       - name: Run login script
-        run: |
-          chmod +x login-ptt.exp
-          ./login-ptt.exp
+        run: .github/workflows/scripts/login-ptt.exp
         env:
-          PTT_USER: ${{ secrets.PTT_ACCOUNT }}
-          PTT_PASS: ${{ secrets.PTT_PASSWORD }}
+          PTT_USER: ${{ secrets.PTT_USER }}
+          PTT_PASS: ${{ secrets.PTT_PASS }}
